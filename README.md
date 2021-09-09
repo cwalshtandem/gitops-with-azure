@@ -2,4 +2,8 @@
 
 ## Notes
 
-Basic template weatherforecast Web API spun up with .net core 5. Used https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action process, removing the deploy via container instances to push the Docker build to ACR.
+Basic template weatherforecast Web API spun up with .net core 5.
+
+Used https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action workflow, removing the deploy via container instances to push the Docker build to ACR.
+
+Used https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions workflow to push a nuget package to github packages.
