@@ -7,19 +7,6 @@
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
-  
-  <configuration>
-    <packageSources>
-        <clear />
-        <add key="github" value="https://nuget.pkg.github.com/matthias61984/index.json" />
-    </packageSources>
-    <packageSourceCredentials>
-        <github>
-            <add key="Username" value="matthias61984" />
-            <add key="ClearTextPassword" value="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" />
-        </github>
-    </packageSourceCredentials>
-  </configuration>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
