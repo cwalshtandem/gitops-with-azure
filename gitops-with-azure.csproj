@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>true</IsPackable>
     <RootNamespace>gitops_with_azure</RootNamespace>
     <UserSecretsId>a3c96d27-d8e7-4c14-9ad0-a29827341a15</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
