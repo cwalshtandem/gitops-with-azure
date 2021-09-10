@@ -23,6 +23,6 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: Push
-      run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${VERSION}.nupkg --source "https://github.com/matthias61984/gitops-with-azure" --api-key ${secrets.PAT_TOKEN}
+      run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${VERSION}.nupkg --source "https://github.com/matthias61984/gitops-with-azure" --api-key ${{ secrets.PAT_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
