@@ -1,5 +1,5 @@
 on: [push]
-name: Linux_Container_Workflow
+name: Push Docker container image to ACR
 
 jobs:
     build-and-deploy:
