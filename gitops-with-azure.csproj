@@ -12,7 +12,7 @@
   <PropertyGroup>
     <PackageId>gitops-with-azure</PackageId>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/matthias61984/gitops-with-azure</RepositoryUrl>
+    <RepositoryUrl>https://github.com/cwalshtandem/gitops-with-azure</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
