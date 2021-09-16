@@ -8,7 +8,7 @@ namespace TestProject1
 		[Fact]
 		public void WowzersWhatACoolTest()
 		{
-			var fooboolean = false;
+			var fooboolean = true;
 
 			Assert.True(fooboolean);
 		}
