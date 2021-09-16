@@ -14,7 +14,7 @@ COPY ["./API/gitops-with-azure.csproj", "."]
 RUN dotnet restore "./gitops-with-azure.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./gitops-with-azure.csproj" -c Release -o /app/build
+RUN dotnet build "./API/gitops-with-azure.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "./gitops-with-azure.csproj" -c Release -o /app/publish
