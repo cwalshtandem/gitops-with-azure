@@ -17,7 +17,7 @@ WORKDIR "/src/."
 RUN dotnet build "./API/gitops-with-azure.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "./gitops-with-azure.csproj" -c Release -o /app/publish
+RUN dotnet publish "./API/gitops-with-azure.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
