@@ -21,4 +21,6 @@ jobs:
       - name: Build
         run: dotnet build
       - name: Test with the dotnet CLI
-        run: cd .\Tests\TestProject1\; dotnet test
+        run: |
+          cd .\Tests\TestProject1
+          dotnet test
