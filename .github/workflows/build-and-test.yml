@@ -23,4 +23,10 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd Tests/TestProject1
-          dotnet test
+          dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-results-${{ matrix.dotnet-version }}
+          path: TestResults-${{ matrix.dotnet-version }}
+        if: ${{ always() }}
