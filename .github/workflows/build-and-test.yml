@@ -2,9 +2,6 @@ name: Run dotnet build and test
 
 on:
   push:
-  pull_request:
-    types:
-      - opened
 
 jobs:
   build:
