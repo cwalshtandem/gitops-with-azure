@@ -13,11 +13,11 @@ jobs:
     - name: Set VERSION variable from workflow
       run: echo "VERSION=${GITHUB_RUN_ID}" >> $GITHUB_ENV
     - name: Build
-      run: dotnet build --configuration Release /p:Version=${VERSION}
+      run: dotnet build
     - name: Test
-      run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
+      run: dotnet test
     - name: Pack
-      run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
+      run: dotnet pack --no-build --output .
     - name: Push
       run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${VERSION}.nupkg --source "https://nuget.pkg.github.com/cwalshtandem/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
       env:
