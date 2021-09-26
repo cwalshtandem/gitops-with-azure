@@ -11,7 +11,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Set VERSION variable from workflow
-      run: echo "VERSION=${GITHUB_RUN_ID}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
     - name: Build
       run: dotnet build --configuration Debug /p:Version=${VERSION}
     - name: Test
