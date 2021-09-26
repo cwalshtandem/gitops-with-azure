@@ -19,6 +19,6 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Debug /p:Version=${VERSION} --no-build --output .
     - name: Push
-      run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${VERSION}.nupkg --source "https://nuget.pkg.github.com/cwalshtandem/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${VERSION}.0.0.nupkg --source "https://nuget.pkg.github.com/cwalshtandem/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
