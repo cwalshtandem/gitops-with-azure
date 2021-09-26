@@ -12,6 +12,10 @@ jobs:
         fetch-depth: 0
     - name: Set VERSION variable from workflow
       run: echo "VERSION=${GITHUB_RUN_ID}" >> $GITHUB_ENV
+    - name: Build
+      run: dotnet build
+    - name: Test
+      run: dotnet test
     - name: Pack
       run: dotnet pack --no-build --output .
     - name: Push
