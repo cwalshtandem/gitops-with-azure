@@ -75,8 +75,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${semanticversion}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${semanticversion}
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:$semanticversion
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:$semanticversion
 
   nuget-push:
     needs: dotnet-build-and-test
