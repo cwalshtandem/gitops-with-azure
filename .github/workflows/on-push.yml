@@ -16,7 +16,7 @@ jobs:
          semanticversionfile=`cat semanticversion.txt`
          adjustedversion="${semanticversionfile#*=}"
          semanticversion="${adjustedversion%VERSION=*}"
-         echo "semantic_version=${semanticversion}" >> $GITHUB_ENV
+         echo "semantic_version=$semanticversion" >> $GITHUB_ENV
 
   dotnet-build-and-test:
     needs: run-versioning-script
@@ -37,7 +37,7 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${{ env.semantic_version }}"
+          dotnet test --logger trx --results-directory "TestResults-${semantic_version}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
