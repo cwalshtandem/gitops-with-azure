@@ -13,9 +13,11 @@ jobs:
         run: |
          chmod +x "${GITHUB_WORKSPACE}/versionScript.sh"
          "${GITHUB_WORKSPACE}/versionScript.sh" ${GITHUB_SHA} ${GITHUB_RUN_ID} ${GITHUB_RUN_NUMBER} ${GITHUB_REF}
-         semanticversionfile=`cat semanticversion.txt`
-         adjustedversion="${semanticversionfile#*=}"
-         semanticversion="${adjustedversion%VERSION=*}"
+      - name: Upload semanticversion test file
+        uses: actions/upload-artifact@v2
+        with:
+          name: semanticversion
+          path: semanticversion.txt
 
   dotnet-build-and-test:
     needs: run-versioning-script
@@ -29,6 +31,16 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Download semanticversion text file
+        uses: actions/download-artifact@v2
+        with:
+          name: semanticversion
+      - shell: bash
+        run: |
+          semanticversionfile=`cat semanticversion.txt`
+          adjustedversion="${semanticversionfile#*=}"
+          semanticversion="${adjustedversion%VERSION=*}"
+          echo "Version from download: $semanticversion"
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -36,12 +48,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${{ env.semantic_version }}"
+          dotnet test --logger trx --results-directory "TestResults-${semanticversion}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-results-${{ env.semantic_version }}
-          path: UnitTests/TestResults-${{ env.semantic_version }}
+          name: dotnet-results-${semanticversion}
+          path: UnitTests/TestResults-${GITHUB_SHA}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
@@ -52,10 +64,12 @@ jobs:
       # checkout the repo
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
+
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: 'Build and push image'
         uses: azure/docker-login@v1
         with:
@@ -63,9 +77,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ env.semantic_version }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ env.semantic_version }}
-
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
   nuget-push:
     needs: dotnet-build-and-test
     runs-on: ubuntu-latest
