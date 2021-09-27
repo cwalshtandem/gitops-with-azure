@@ -39,7 +39,8 @@ jobs:
         run: |
           semanticversionfile=`cat semanticversion.txt`
           adjustedversion="${semanticversionfile#*=}"
-          echo "Version from download: $adjustedversion"
+          semanticversion="${adjustedversion%VERSION=*}"
+          echo "Version from download: $semanticversion"
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -47,12 +48,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${adjustedversion}"
+          dotnet test --logger trx --results-directory "TestResults-${{semanticversion}}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-results-${adjustedversion}
-          path: UnitTests/TestResults-${adjustedversion}
+          name: dotnet-results-${{semanticversion}}
+          path: UnitTests/TestResults-${{semanticversion}}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
