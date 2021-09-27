@@ -10,7 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: run version script
-        run: "${GITHUB_WORKSPACE}/versionScript.sh"
+        run: |
+         chmod +x "${GITHUB_WORKSPACE}/versionScript.sh"
+         "${GITHUB_WORKSPACE}/versionScript.sh"
         shell: bash
 
   dotnet-build-and-test:
