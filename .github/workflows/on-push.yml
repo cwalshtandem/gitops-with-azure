@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: run version script
-      - shell: bash
         run: |
          chmod +x "${GITHUB_WORKSPACE}/versionScript.sh"
          "${GITHUB_WORKSPACE}/versionScript.sh" ${GITHUB_SHA} ${GITHUB_RUN_ID} ${GITHUB_RUN_NUMBER} ${GITHUB_REF}
