@@ -13,6 +13,11 @@ jobs:
         run: |
          chmod +x "${GITHUB_WORKSPACE}/versionScript.sh"
          "${GITHUB_WORKSPACE}/versionScript.sh" ${GITHUB_SHA} ${GITHUB_RUN_ID} ${GITHUB_RUN_NUMBER} ${GITHUB_REF}
+      - name: Upload semanticversion test file
+        uses: actions/upload-artifact@v2
+        with:
+          name: semanticversion
+          path: semanticversion.txt
 
   dotnet-build-and-test:
     needs: run-versioning-script
@@ -21,6 +26,14 @@ jobs:
       matrix:
         dotnet: [ '5.0.x' ]  
     steps:
+      - name: Download semanticversion text file
+        uses: actions/download-artifact@v2
+        with:
+          name: semanticversion
+      - shell: bash
+        run: |
+          semanticversion=`cat semanticversion.txt`
+          echo "Semantic version from download: $semanticversion"
       - uses: actions/checkout@v2
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
