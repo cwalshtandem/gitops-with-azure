@@ -48,12 +48,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-$semanticversion"
+          dotnet test --logger trx --results-directory "TestResults-${semanticversion}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-results-$semanticversion
-          path: UnitTests/TestResults-$semanticversion
+          name: "dotnet-results-${semanticversion}"
+          path: "UnitTests/TestResults-${semanticversion}"
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
