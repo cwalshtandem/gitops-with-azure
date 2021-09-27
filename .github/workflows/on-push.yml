@@ -2,9 +2,6 @@ name: Build, test, and push artifacts
 
 on:
   push:
-  
-env:
-  semanticversion: "1.0.0"
 
 jobs:
 
@@ -20,7 +17,7 @@ jobs:
          adjustedversion="${semanticversionfile#*=}"
          semanticversion="${adjustedversion%VERSION=*}"
          echo "Version from download: $semanticversion"
-         echo semanticversion = $semanticversion >> $GITHUB_ENV
+         echo "semanticversion = $semanticversion" >> $GITHUB_ENV
 
   dotnet-build-and-test:
     needs: run-versioning-script
