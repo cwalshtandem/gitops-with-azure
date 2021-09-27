@@ -33,7 +33,7 @@ jobs:
       - shell: bash
         run: |
           semanticversionfile=`cat semanticversion.txt`
-          semanticversion=${semanticversionfile#SEMANTIC_VERSION=%VERSION=*}
+          semanticversion="${semanticversionfile#*=%VERSION=*}"
           echo "Semantic version from download: $semanticversion"
       - uses: actions/checkout@v2
       - name: Setup dotnet
