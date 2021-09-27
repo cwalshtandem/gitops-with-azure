@@ -48,12 +48,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${semver}"
+          dotnet test --logger trx --results-directory "TestResults-${GITHUB_SHA}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: "dotnet-results-${semver}"
-          path: "UnitTests/TestResults-${semver}"
+          name: "dotnet-results-${GITHUB_SHA}"
+          path: "UnitTests/TestResults-${GITHUB_SHA}"
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
