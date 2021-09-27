@@ -2,6 +2,9 @@ name: Build, test, and push artifacts
 
 on:
   push:
+  
+env:
+  semanticversion: "1.0.0"
 
 jobs:
 
@@ -13,11 +16,11 @@ jobs:
         run: |
          chmod +x "${GITHUB_WORKSPACE}/versionScript.sh"
          "${GITHUB_WORKSPACE}/versionScript.sh" ${GITHUB_SHA} ${GITHUB_RUN_ID} ${GITHUB_RUN_NUMBER} ${GITHUB_REF}
-      - name: Upload semanticversion test file
-        uses: actions/upload-artifact@v2
-        with:
-          name: semanticversion
-          path: semanticversion.txt
+         semanticversionfile=`cat semanticversion.txt`
+         adjustedversion="${semanticversionfile#*=}"
+         semanticversion="${adjustedversion%VERSION=*}"
+         echo "Version from download: $semanticversion"
+         echo semanticversion = $semanticversion
 
   dotnet-build-and-test:
     needs: run-versioning-script
@@ -38,12 +41,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${semanticversion}"
+          dotnet test --logger trx --results-directory "TestResults-${{ env.semanticversion }}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-results-${semanticversion}
-          path: UnitTests/TestResults-${semanticversion}
+          name: dotnet-results-${{ env.semanticversion }}
+          path: UnitTests/TestResults-${{ env.semanticversion }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
@@ -58,16 +61,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Download semanticversion text file
-        uses: actions/download-artifact@v2
-        with:
-          name: semanticversion
-      - shell: bash
-        run: |
-          semanticversionfile=`cat semanticversion.txt`
-          adjustedversion="${semanticversionfile#*=}"
-          semanticversion="${adjustedversion%VERSION=*}"
-          echo "Version from download: $semanticversion"
       - name: 'Build and push image'
         uses: azure/docker-login@v1
         with:
