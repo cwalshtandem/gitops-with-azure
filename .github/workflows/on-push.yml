@@ -11,9 +11,9 @@ jobs:
       - uses: actions/checkout@v1
       - name: run version script
         env:
-          GITHUBSHA: ${{ GITHUB_SHA }}
+          githubsha: ${{ GITHUB_SHA }}
         run: |
-         chmod +x "${GITHUB_WORKSPACE}/versionScript.sh" $GITHUBSHA
+         chmod +x "${GITHUB_WORKSPACE}/versionScript.sh" $githubsha
          "${GITHUB_WORKSPACE}/versionScript.sh"
         shell: bash
 
