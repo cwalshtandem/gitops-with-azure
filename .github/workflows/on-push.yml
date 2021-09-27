@@ -4,6 +4,14 @@ on:
   push:
 
 jobs:
+
+  run-versioning-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: script
+        run: "${GITHUB_WORKSPACE}/versionScript.sh"
+
   dotnet-build-and-test:
     runs-on: ubuntu-latest
     strategy:
