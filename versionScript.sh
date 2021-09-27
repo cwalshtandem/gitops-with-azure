@@ -53,5 +53,5 @@ fi
 
 echo -e "SEMANTIC_VERSION=$semanticVersion\nVERSION=$qualifiedVersion\n" > ./semanticversion.txt
 echo "$(cat ./semanticversion.txt)"
-echo $(jq ".version=\"$semanticVersion\"" appsettings.json) > ./API/appsettings.json
+echo $(jq ".version=\"$semanticVersion\"" API/appsettings.json) > ./API/appsettings.json
 echo "$(cat ./API/appsettings.json)"
