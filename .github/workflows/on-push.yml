@@ -53,3 +53,25 @@ jobs:
       - run: |
           docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
+
+  nuget-push:
+    needs: dotnet-build-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set VERSION variable from workflow
+        run: echo "VERSION=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+      - name: Build
+        run: dotnet build --configuration Debug /p:Version=${VERSION}
+      - name: Test
+        run: dotnet test --configuration Debug /p:Version=${VERSION} --no-build
+      - name: Pack
+        run: dotnet pack --configuration Debug /p:Version=${VERSION} --no-build --output .
+      - name: Push
+        run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${VERSION}.0.0.nupkg --source "https://nuget.pkg.github.com/cwalshtandem/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
