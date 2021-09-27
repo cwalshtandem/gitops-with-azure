@@ -35,16 +35,6 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build
-      - name: Download semanticversion text file
-        uses: actions/download-artifact@v2
-        with:
-          name: semanticversion
-      - shell: bash
-        run: |
-          semanticversionfile=`cat semanticversion.txt`
-          adjustedversion="${semanticversionfile#*=}"
-          semanticversion="${adjustedversion%VERSION=*}"
-          echo "Version from download: $semanticversion"
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
@@ -64,12 +54,20 @@ jobs:
       # checkout the repo
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
-
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      - name: Download semanticversion text file
+        uses: actions/download-artifact@v2
+        with:
+          name: semanticversion
+      - shell: bash
+        run: |
+          semanticversionfile=`cat semanticversion.txt`
+          adjustedversion="${semanticversionfile#*=}"
+          semanticversion="${adjustedversion%VERSION=*}"
+          echo "Version from download: $semanticversion"
       - name: 'Build and push image'
         uses: azure/docker-login@v1
         with:
@@ -77,8 +75,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${semanticversion}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${semanticversion}
 
   nuget-push:
     needs: dotnet-build-and-test
