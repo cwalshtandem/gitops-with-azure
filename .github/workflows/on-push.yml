@@ -10,10 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: run version script
-        env:
-          githubsha: ${{ GITHUB_SHA }}
         run: |
-         chmod +x "${GITHUB_WORKSPACE}/versionScript.sh" $githubsha
+         chmod +x "${GITHUB_WORKSPACE}/versionScript.sh" ${GITHUB_SHA}
          "${GITHUB_WORKSPACE}/versionScript.sh"
         shell: bash
 
