@@ -21,7 +21,7 @@ IFS=' ' # reset to default value after usage
 versionBase="$versionMajor.$versionMinor.$versionHotfix"
 echo "BaseVersion: $versionBase"
 
-buildNumber='${bamboo.buildNumber}' #'1'
+buildNumber="$2" #'1'
 echo "BuildNumber: $buildNumber"
 
 branchSha="$1"
@@ -29,7 +29,7 @@ branchSha="$1"
 branchHash=${branchSha:0:8} #git rev-parse --short $branchSha
 echo "BranchHash: $branchHash"
 
-branchName='${bamboo.planRepository.branchName}' #'develop'
+branchName="$4" #'develop'
 echo "BranchName: $branchName"
 
 semanticVersion=1.0.0
