@@ -29,7 +29,8 @@ branchSha="$1"
 branchHash=${branchSha:0:8} #git rev-parse --short $branchSha
 echo "BranchHash: $branchHash"
 
-branchName="$4" | cut -c 12- #'develop'
+githubRef="$4" #'develop'
+branchName=githubRef | cut -c 12-
 echo "BranchName: $branchName"
 
 semanticVersion=1.0.0
