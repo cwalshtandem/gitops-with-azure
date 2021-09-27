@@ -52,7 +52,7 @@ echo "Feature Branch Flow"
 semanticVersion=$versionBase-$branchHash.$buildNumber
 fi
 
-echo -e "$semanticVersion\nVERSION=$qualifiedVersion\n" > ./semanticversion.txt
+echo -e "SEMANTIC_VERSION=$semanticVersion\nVERSION=$qualifiedVersion\n" > ./semanticversion.txt
 echo "$(cat ./semanticversion.txt)"
 echo $(jq ".version=\"$semanticVersion\"" API/appsettings.json) > ./API/appsettings.json
 echo "$(cat ./API/appsettings.json)"
