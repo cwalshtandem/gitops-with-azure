@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: script
+      - name: run version script
         run: "${GITHUB_WORKSPACE}/versionScript.sh"
+        shell: bash
 
   dotnet-build-and-test:
     needs: run-versioning-script
