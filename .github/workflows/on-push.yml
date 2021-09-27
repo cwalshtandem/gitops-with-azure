@@ -1,16 +1,14 @@
-name: Run dotnet build and test
+name: Build, test, and push artifacts
 
 on:
   push:
 
 jobs:
-  build:
-
+  dotnet-build-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet: [ '5.0.x' ]
-        
+        dotnet: [ '5.0.x' ]  
     steps:
       - uses: actions/checkout@v2
       - name: Setup dotnet
@@ -32,3 +30,26 @@ jobs:
           path: UnitTests/TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+        
+  push-to-acr:
+    needs: dotnet-build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Build and push image'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ github.sha }}
