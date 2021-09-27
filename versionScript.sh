@@ -24,7 +24,7 @@ echo "BaseVersion: $versionBase"
 buildNumber='${bamboo.buildNumber}' #'1'
 echo "BuildNumber: $buildNumber"
 
-branchSha='$1'
+branchSha='${1}'
 
 branchHash=${branchSha:0:8} #git rev-parse --short $branchSha
 echo "BranchHash: $branchHash"
