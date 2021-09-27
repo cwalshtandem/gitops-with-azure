@@ -16,8 +16,7 @@ jobs:
          semanticversionfile=`cat semanticversion.txt`
          adjustedversion="${semanticversionfile#*=}"
          semanticversion="${adjustedversion%VERSION=*}"
-         echo "Version from download: $semanticversion"
-         echo "SEMANTIC_VERSION=${semanticversion}" >> $GITHUB_ENV
+         echo "semantic_version=${semanticversion}" >> $GITHUB_ENV
 
   dotnet-build-and-test:
     needs: run-versioning-script
@@ -38,12 +37,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${{ env.SEMANTIC_VERSION }}"
+          dotnet test --logger trx --results-directory "TestResults-${{ env.semantic_version }}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-results-${{ env.SEMANTIC_VERSION }}
-          path: UnitTests/TestResults-${{ env.SEMANTIC_VERSION }}
+          name: dotnet-results-${{ env.semantic_version }}
+          path: UnitTests/TestResults-${{ env.semantic_version }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
@@ -65,8 +64,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ env.SEMANTIC_VERSION }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ env.SEMANTIC_VERSION }}
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ env.semantic_version }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/gitops-with-azure:${{ env.semantic_version }}
 
   nuget-push:
     needs: dotnet-build-and-test
