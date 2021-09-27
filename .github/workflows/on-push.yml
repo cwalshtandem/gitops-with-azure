@@ -13,6 +13,7 @@ jobs:
         run: "${GITHUB_WORKSPACE}/versionScript.sh"
 
   dotnet-build-and-test:
+    needs: run-versioning-script
     runs-on: ubuntu-latest
     strategy:
       matrix:
