@@ -17,7 +17,7 @@ jobs:
          adjustedversion="${semanticversionfile#*=}"
          semanticversion="${adjustedversion%VERSION=*}"
          echo "Version from download: $semanticversion"
-         echo "SEMANTIC_VERSION=$semanticversion" >> $GITHUB_ENV
+         echo "SEMANTIC_VERSION=${semanticversion}" >> $GITHUB_ENV
 
   dotnet-build-and-test:
     needs: run-versioning-script
