@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tempVersion=$(jq '.version' appsettings.json)
+tempVersion=$(jq '.version' ../API/appsettings.json)
 docVersion="${tempVersion%\"}"
 docVersion="${docVersion#\"}"
 echo "DocVersion: $docVersion"
