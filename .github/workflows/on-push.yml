@@ -41,6 +41,7 @@ jobs:
           adjustedversion="${semanticversionfile#*=}"
           semanticversion="${adjustedversion%VERSION=*}"
           echo "Version from download: $semanticversion"
+          echo "SEMANTIC_VERSION=$semanticversion" >> $GITHUB_ENV
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -48,12 +49,12 @@ jobs:
       - name: Test with the dotnet CLI
         run: |
           cd UnitTests
-          dotnet test --logger trx --results-directory "TestResults-${semanticversion}"
+          dotnet test --logger trx --results-directory "TestResults-${{ env.SEMANTIC_VERSION }}"
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
-          name: dotnet-results-${semanticversion}
-          path: UnitTests/TestResults-${GITHUB_SHA}
+          name: dotnet-results-${{ env.SEMANTIC_VERSION }}
+          path: UnitTests/TestResults-${{ env.SEMANTIC_VERSION }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
