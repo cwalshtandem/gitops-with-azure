@@ -38,6 +38,7 @@ jobs:
         with:
           name: semanticversion
       - shell: bash
+        # TODO: Abstract this run chain into it's own script file
         run: |
           semanticversionfile=`cat semanticversion.txt`
           adjustedversion="${semanticversionfile#*=}"
@@ -55,14 +56,12 @@ jobs:
         with:
           name: dotnet-results-${{ env.SEMANTIC_VERSION }}
           path: UnitTests/TestResults-${{ env.SEMANTIC_VERSION }}
-        # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         
   push-to-acr:
     needs: dotnet-build-and-test
     runs-on: ubuntu-latest
     steps:
-      # checkout the repo
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
       - name: Download semanticversion text file
