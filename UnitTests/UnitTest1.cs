@@ -8,9 +8,7 @@ namespace UnitTests
 		[Fact]
 		public void WowzersWhatACoolTest()
 		{
-			var fooboolean = true;
-
-			Assert.True(fooboolean);
+			Assert.True(false);
 		}
 	}
 }
