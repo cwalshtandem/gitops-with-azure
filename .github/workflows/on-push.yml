@@ -38,7 +38,6 @@ jobs:
         with:
           name: semanticversion
       - shell: bash
-        # TODO: Abstract this run chain into it's own script file
         run: |
           chmod +x "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
           "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
@@ -67,11 +66,8 @@ jobs:
           name: semanticversion
       - shell: bash
         run: |
-          semanticversionfile=`cat semanticversion.txt`
-          adjustedversion="${semanticversionfile#*=}"
-          semanticversion="${adjustedversion%VERSION=*}"
-          echo "Version from download: $semanticversion"
-          echo "SEMANTIC_VERSION=$semanticversion" >> $GITHUB_ENV
+          chmod +x "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
+          "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
@@ -101,11 +97,8 @@ jobs:
           name: semanticversion
       - shell: bash
         run: |
-          semanticversionfile=`cat semanticversion.txt`
-          adjustedversion="${semanticversionfile#*=}"
-          semanticversion="${adjustedversion%VERSION=*}"
-          echo "Version from download: $semanticversion"
-          echo "SEMANTIC_VERSION=$semanticversion" >> $GITHUB_ENV
+          chmod +x "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
+          "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
       - name: Build
         run: dotnet build --configuration Debug /p:Version=${{ env.SEMANTIC_VERSION }}
       - name: Test
