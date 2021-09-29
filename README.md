@@ -13,10 +13,3 @@ See here for configuring branch protections: https://docs.github.com/en/reposito
 See here for adding automated .Net build and test workflow: https://docs.github.com/en/actions/guides/building-and-testing-net (on push to all branches)
 
 See here for github environment variable information: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables.
-
-
-Look at port allocation for Dockerized integration tests
-
-Fix run build number
-
-Time restraints on longer builds?
