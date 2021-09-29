@@ -21,15 +21,14 @@ IFS=' ' # reset to default value after usage
 versionBase="$versionMajor.$versionMinor.$versionHotfix"
 echo "BaseVersion: $versionBase"
 
-buildNumber="$2" #'1'
-echo "BuildNumber: $buildNumber"
-
 branchSha="$1"
-
 branchHash=${branchSha:0:8} #git rev-parse --short $branchSha
 echo "BranchHash: $branchHash"
 
-gitHubRef="$4" #'develop'
+buildNumber="$2"
+echo "BuildNumber: $buildNumber"
+
+gitHubRef="$3" #'develop'
 branchName=${gitHubRef#refs/heads/}
 echo "BranchName: $branchName"
 
