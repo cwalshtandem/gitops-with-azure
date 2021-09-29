@@ -11,8 +11,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: run version script
         run: |
-         chmod +x "${GITHUB_WORKSPACE}/versionScript.sh"
-         "${GITHUB_WORKSPACE}/versionScript.sh" ${GITHUB_SHA} ${GITHUB_RUN_ID} ${GITHUB_RUN_NUMBER} ${GITHUB_REF}
+         chmod +x "${GITHUB_WORKSPACE}/.github/scripts/versionScript.sh"
+         "${GITHUB_WORKSPACE}/.github/scripts/versionScript.sh" ${GITHUB_SHA} ${GITHUB_RUN_NUMBER} ${GITHUB_REF}
       - name: Upload semanticversion test file
         uses: actions/upload-artifact@v2
         with:
@@ -40,11 +40,8 @@ jobs:
       - shell: bash
         # TODO: Abstract this run chain into it's own script file
         run: |
-          semanticversionfile=`cat semanticversion.txt`
-          adjustedversion="${semanticversionfile#*=}"
-          semanticversion="${adjustedversion%VERSION=*}"
-          echo "Version from download: $semanticversion"
-          echo "SEMANTIC_VERSION=$semanticversion" >> $GITHUB_ENV
+          chmod +x "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
+          "${GITHUB_WORKSPACE}/.github/scripts/readSemanticVersion.sh"
       - name: Build
         run: dotnet build
       - name: Test with the dotnet CLI
