@@ -5,6 +5,7 @@ on:
 
 env:
   REPO_NAME: "${{ github.event.repository.name }}"
+  REPO_OWNER: "{{ github.repository_owner }}"
 
 jobs:
 
@@ -109,6 +110,6 @@ jobs:
       - name: Pack
         run: dotnet pack --configuration Debug /p:Version=${{ env.SEMANTIC_VERSION }} --no-build --output .
       - name: Push
-        run: dotnet nuget push /home/runner/work/gitops-with-azure/gitops-with-azure/gitops-with-azure.${{ env.SEMANTIC_VERSION }}.nupkg --source "https://nuget.pkg.github.com/cwalshtandem/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget push /home/runner/work/${{ env.REPO_NAME }}/${{ env.REPO_NAME }}/${{ env.REPO_NAME }}.${{ env.SEMANTIC_VERSION }}.nupkg --source "https://nuget.pkg.github.com/${{ env.REPO_OWNER }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
